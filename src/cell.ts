@@ -6,4 +6,8 @@ export class Cell {
   place(mark: Mark) {
     this.value = mark;
   }
+
+  getValue() {
+    return this.value;
+  }
 }

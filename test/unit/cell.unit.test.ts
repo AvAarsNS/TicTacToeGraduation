@@ -8,7 +8,7 @@ describe("This is a test suite for the units of the cell class", () => {
     expect(cell["value"]).toBeUndefined();
   });
 
-  describe("A mark should be able to be put in a cell", () => {
+  describe("A mark should be able to be put in a cell and return that value when asked", () => {
     let cell = new Cell();
 
     beforeEach(() => {
@@ -18,13 +18,13 @@ describe("This is a test suite for the units of the cell class", () => {
     it("place a X", () => {
       cell.place("X");
 
-      expect(cell["value"]).toEqual("X");
+      expect(cell.getValue()).toEqual("X");
     });
 
     it("place an O", () => {
       cell.place("O");
 
-      expect(cell["value"]).toEqual("O");
+      expect(cell.getValue()).toEqual("O");
     });
   });
 });

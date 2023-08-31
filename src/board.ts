@@ -12,4 +12,12 @@ export class Board {
   place(mark: Mark, row: number, column: number) {
     this.cells[row][column].place(mark);
   }
+
+  getRow(row: number) {
+    return this.cells[row];
+  }
+
+  getColumn(column: number) {
+    return this.cells.map((row) => row[column]);
+  }
 }
