@@ -10,14 +10,14 @@ describe("This is a test suite for the units of the board class", () => {
       const board = new Board(3, 3);
 
       it("should contain 3 rows", () => {
-        expect(board["board"].length).toEqual(3);
+        expect(board["cells"].length).toEqual(3);
       });
       it("should contain 3 columns", () => {
-        board["board"].every((row) => expect(row.length).toBe(3));
+        board["cells"].every((row) => expect(row.length).toBe(3));
       });
       it("should have all new cells", () => {
         expect(
-          board["board"].flat().every((cell) => cell instanceof Cell)
+          board["cells"].flat().every((cell) => cell instanceof Cell)
         ).toBeTruthy();
       });
     });

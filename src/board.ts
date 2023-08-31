@@ -1,11 +1,15 @@
-import { Cell } from "./cell";
+import { Cell, Mark } from "./cell";
 
 export class Board {
-  private board: Cell[][];
+  private cells: Cell[][];
 
   constructor(rows: number, colums: number) {
-    this.board = new Array(rows)
+    this.cells = new Array(rows)
       .fill(null)
       .map(() => new Array(colums).fill(null).map(() => new Cell()));
+  }
+
+  place(mark: Mark, row: number, column: number) {
+    this.cells[row][column].place(mark);
   }
 }
