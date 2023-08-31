@@ -1,6 +1,6 @@
 import { Board } from "./board";
-import { Mark } from "./cell";
-import { allValuesAre } from "./utility";
+import { Cell, Mark } from "./cell";
+import { allValuesAre, isOnDiagonal } from "./utility";
 
 export class TicTacToe {
   private board: Board;
@@ -20,9 +20,19 @@ export class TicTacToe {
   }
 
   hasWinAt(mark: Mark, row: number, column: number) {
-    const rowCells = this.board.getRow(row);
-    const columnCells = this.board.getColumn(column);
+    const linesToCheck: Cell[][] = [];
+    linesToCheck.push(this.board.getRow(row));
+    linesToCheck.push(this.board.getColumn(column));
 
-    return allValuesAre(rowCells, mark) || allValuesAre(columnCells, mark);
+    const diagonal = isOnDiagonal(row, column);
+
+    if (diagonal === "/" || diagonal === "both") {
+      linesToCheck.push(this.board.getDiagonal("/"));
+    }
+    if (diagonal === "\\" || diagonal === "both") {
+      linesToCheck.push(this.board.getDiagonal("\\"));
+    }
+
+    return linesToCheck.some((line) => allValuesAre(line, mark));
   }
 }

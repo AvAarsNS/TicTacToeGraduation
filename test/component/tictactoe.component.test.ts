@@ -3,7 +3,7 @@ import { TicTacToe } from "../../src/tictactoe";
 import { Board } from "../../src/board";
 import { Mark } from "../../src/cell";
 
-import { allValuesAre } from "../../src/utility";
+import { allValuesAre, isOnDiagonal } from "../../src/utility";
 import { allCellsEmpty } from "../doubles/cells.double";
 
 jest.mock("../../src/board");
@@ -68,70 +68,115 @@ describe("This is a test suite for components of the TicTacToe game", () => {
   });
 
   describe("When checking for a win, ", () => {
-    describe.each([
-      ["X", 0, 0],
-      ["O", 1, 2],
-      ["X", 2, 1],
-    ] as [Mark, number, number][])(
-      "and the last played mark was %s at (%i, %i), the game",
-      (mark, row, column) => {
-        const game = new TicTacToe();
-        const fakeRow = allCellsEmpty();
-        const fakeColumn = allCellsEmpty();
-        const mockedBoard = game["board"] as jest.Mocked<Board>;
+    describe("and the last played mark was X at (1, 1), the game", () => {
+      const mark = "X";
+      const row = 1;
+      const column = 1;
 
-        beforeAll(() => {
-          jest.resetAllMocks();
+      const game = new TicTacToe();
+      const fakeRow = allCellsEmpty();
+      const fakeColumn = allCellsEmpty();
+      const mockedBoard = game["board"] as jest.Mocked<Board>;
 
-          mockedBoard.getRow.mockReturnValueOnce(fakeRow);
-          mockedBoard.getColumn.mockReturnValueOnce(fakeColumn);
+      beforeAll(() => {
+        jest.resetAllMocks();
 
-          game["hasWinAt"](mark, row, column);
-        });
+        mockedBoard.getRow.mockReturnValueOnce(fakeRow);
+        mockedBoard.getColumn.mockReturnValueOnce(fakeColumn);
 
-        it("should retrieve the row from the board", () => {
-          expect(game["board"].getRow).toHaveBeenCalledWith(row);
-        });
+        game["hasWinAt"](mark, row, column);
+      });
 
-        it("should retrieve the column from the board", () => {
-          expect(game["board"].getColumn).toHaveBeenCalledWith(column);
-        });
+      it("should retrieve the row from the board", () => {
+        expect(game["board"].getRow).toHaveBeenCalledWith(row);
+      });
 
-        it("should check if the row is filled with the players mark", () => {
-          expect(allValuesAre).toBeCalledWith(fakeRow, mark);
-        });
+      it("should retrieve the column from the board", () => {
+        expect(game["board"].getColumn).toHaveBeenCalledWith(column);
+      });
 
-        it("should check if the column is filled with the players mark", () => {
-          expect(allValuesAre).toBeCalledWith(fakeColumn, mark);
-        });
-      }
-    );
-    describe("and the game checks the row and column", () => {
+      it("should check if the row is filled with the players mark", () => {
+        expect(allValuesAre).toBeCalledWith(fakeRow, mark);
+      });
+
+      it("should check if the column is filled with the players mark", () => {
+        expect(allValuesAre).toBeCalledWith(fakeColumn, mark);
+      });
+
+      it("should check what diagonal the coordinate is on", () => {
+        expect(isOnDiagonal).toBeCalledWith(row, column);
+      });
+    });
+
+    describe("and the game checks the diagonals, if the mark", () => {
+      const game = new TicTacToe();
+      const mockedGetDiagonal = isOnDiagonal as jest.MockedFn<
+        typeof isOnDiagonal
+      >;
+
+      beforeEach(() => {
+        jest.resetAllMocks();
+      });
+
+      it("is on the top left diagonal it should check that diagonal", () => {
+        mockedGetDiagonal.mockReturnValueOnce("\\");
+
+        game["hasWinAt"]("X", 0, 0);
+
+        expect(game["board"].getDiagonal).toBeCalledWith("\\");
+      });
+      it("is on the top right diagonal it should check that diagonal", () => {
+        mockedGetDiagonal.mockReturnValueOnce("/");
+
+        game["hasWinAt"]("X", 2, 0);
+        expect(game["board"].getDiagonal).toBeCalledWith("/");
+      });
+      it("is on both diagonals it should get both diagonals", () => {
+        mockedGetDiagonal.mockReturnValueOnce("both");
+
+        game["hasWinAt"]("X", 1, 1);
+        expect(game["board"].getDiagonal).toBeCalledWith("\\");
+        expect(game["board"].getDiagonal).toBeCalledWith("/");
+      });
+    });
+
+    describe("and the game checks the rows, columns and diagonals", () => {
       const game = new TicTacToe();
       const mockedAllValuesAre = allValuesAre as jest.MockedFn<
         typeof allValuesAre
       >;
+      const mockedGetDiagonal = isOnDiagonal as jest.MockedFn<
+        typeof isOnDiagonal
+      >;
 
-      afterAll(() => {
+      beforeAll(() => {
+        mockedGetDiagonal.mockReturnValue("both");
+      });
+
+      afterEach(() => {
         mockedAllValuesAre.mockReset();
       });
 
-      it("when both are filled with the last played mark -> win", () => {
+      it("when all are filled with the last played mark -> win", () => {
         mockedAllValuesAre.mockReturnValue(true);
         const result = game["hasWinAt"]("X", 1, 1);
         expect(result).toBeTruthy();
       });
 
       it("one of them filled with the last played mark -> win", () => {
-        mockedAllValuesAre.mockReturnValueOnce(false).mockReturnValueOnce(true);
+        mockedAllValuesAre
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+          .mockReturnValueOnce(false);
 
-        const result = game["hasWinAt"]("O", 2, 2);
+        const result = game["hasWinAt"]("O", 1, 1);
         expect(result).toBeTruthy();
       });
 
-      it("both are NOT filled with the last played mark -> no win", () => {
+      it("none are filled with the last played mark -> no win", () => {
         mockedAllValuesAre.mockReturnValue(false);
-        const result = game["hasWinAt"]("O", 2, 2);
+        const result = game["hasWinAt"]("O", 1, 1);
         expect(result).toBeFalsy();
       });
     });

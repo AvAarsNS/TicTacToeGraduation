@@ -26,22 +26,33 @@ export const firstRow = () => {
 export const thirdRow = () => {
   const row = [new Cell(), new Cell(), new Cell()];
   row[0].place("O");
-  row[2].place("X");
   return row;
 };
 
 export const firstColumn = () => {
   const column = [new Cell(), new Cell(), new Cell()];
   column[0].place("X");
-  column[1].place("X");
+  column[1].place("O");
   column[2].place("O");
   return column;
 };
 
 export const thirdColumn = () => {
   const column = [new Cell(), new Cell(), new Cell()];
-  column[0].place("X");
-  column[1].place("O");
-  column[2].place("O");
+  column[0].place("O");
+  column[1].place("X");
   return column;
+};
+
+export const topLeftDiagonal = () => {
+  const diagonal = [new Cell(), new Cell(), new Cell()];
+  diagonal[0].place("X");
+  return diagonal;
+};
+
+export const topRightDiagonal = () => {
+  const diagonal = [new Cell(), new Cell(), new Cell()];
+  diagonal[0].place("O");
+  diagonal[2].place("O");
+  return diagonal;
 };

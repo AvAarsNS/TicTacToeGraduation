@@ -8,7 +8,6 @@ export const filledBoard = () => {
   board.place("O", 2, 0);
   board.place("O", 0, 2);
   board.place("X", 1, 2);
-  board.place("X", 2, 2);
 
   return board;
 };

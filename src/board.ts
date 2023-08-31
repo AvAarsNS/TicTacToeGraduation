@@ -1,5 +1,7 @@
 import { Cell, Mark } from "./cell";
 
+export type Diagonal = "\\" | "/";
+
 export class Board {
   private cells: Cell[][];
 
@@ -19,5 +21,14 @@ export class Board {
 
   getColumn(column: number) {
     return this.cells.map((row) => row[column]);
+  }
+
+  getDiagonal(direction: Diagonal) {
+    const width = this.cells[0].length;
+    if (direction === "\\") {
+      return this.cells.map((row, index) => row[index]);
+    }
+
+    return this.cells.map((row, index) => row[width - 1 - index]);
   }
 }

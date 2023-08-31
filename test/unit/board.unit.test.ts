@@ -7,9 +7,9 @@ import {
   firstRow,
   thirdColumn,
   thirdRow,
+  topLeftDiagonal,
+  topRightDiagonal,
 } from "../doubles/cells.double";
-
-jest.mock("../../src/cell");
 
 describe("This is a test suite for the units of the board class", () => {
   describe("A new board should create empty cells in a grid, with the given size", () => {
@@ -61,26 +61,46 @@ describe("This is a test suite for the units of the board class", () => {
 
     it("retrieving the first column", () => {
       const expectedColumn = firstColumn();
-      expect(
-        board
-          .getColumn(0)
-          .every(
-            (cell, index) =>
-              cell.getValue() === expectedColumn[index].getValue()
-          )
-      ).toBeTruthy();
+
+      board
+        .getColumn(0)
+        .forEach((cell, index) =>
+          expect(cell.getValue()).toBe(expectedColumn[index].getValue())
+        );
     });
 
     it("retrieving the third column", () => {
       const expectedColumn = thirdColumn();
-      expect(
-        board
-          .getColumn(2)
-          .every(
-            (cell, index) =>
-              cell.getValue() === expectedColumn[index].getValue()
-          )
-      ).toBeTruthy();
+
+      board
+        .getColumn(2)
+        .forEach((cell, index) =>
+          expect(cell.getValue()).toBe(expectedColumn[index].getValue())
+        );
+    });
+  });
+
+  describe("The board should be able to return the diagonals", () => {
+    const board = filledBoard();
+
+    it("retrieving the \\ diagonal", () => {
+      const expectedDiagonal = topLeftDiagonal();
+
+      board
+        .getDiagonal("\\")
+        .forEach((cell, index) =>
+          expect(cell.getValue()).toBe(expectedDiagonal[index].getValue())
+        );
+    });
+
+    it("retrieving the / diagonal", () => {
+      const expectedDiagonal = topRightDiagonal();
+
+      board
+        .getDiagonal("/")
+        .forEach((cell, index) =>
+          expect(cell.getValue()).toBe(expectedDiagonal[index].getValue())
+        );
     });
   });
 });
