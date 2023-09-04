@@ -7,6 +7,12 @@ export const allCellsX = () => {
   return cells;
 };
 
+export const allCellsO = () => {
+  const cells = [new Cell(), new Cell(), new Cell()];
+  cells.forEach((cell) => cell.place("O"));
+  return cells;
+};
+
 export const mixedCells = () => {
   const cells = [new Cell(), new Cell(), new Cell()];
   cells[0].place("O");
