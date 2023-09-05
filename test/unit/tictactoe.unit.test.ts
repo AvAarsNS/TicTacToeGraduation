@@ -1,4 +1,6 @@
-import { allValuesAre, isOnDiagonal } from "../../src/tictactoe";
+/* eslint-disable @typescript-eslint/dot-notation */
+import { TicTacToe, allValuesAre, isOnDiagonal } from "../../src/tictactoe";
+import { fullBoard } from "../doubles/board.double";
 import { allCellsEmpty, allCellsX, mixedCells } from "../doubles/cells.double";
 
 describe("This is a test suite for the TicTacToe game", () => {
@@ -41,6 +43,23 @@ describe("This is a test suite for the TicTacToe game", () => {
     });
     it("The middle top coordinate is not on a diagonal", () => {
       expect(isOnDiagonal(0, 1)).toEqual("none");
+    });
+  });
+
+  describe("The game should be able to format the board nicely", () => {
+    it("An empty board should be formatted nicely", () => {
+      const game = new TicTacToe();
+      expect(game.getFormattedBoard()).toEqual(
+        " | | \n-----\n | | \n-----\n | | "
+      );
+    });
+
+    it("A full board should be formatted nicely", () => {
+      const game = new TicTacToe();
+      game["board"] = fullBoard();
+      expect(game.getFormattedBoard()).toEqual(
+        "X|O|X\n-----\nX|X|O\n-----\nO|X|O"
+      );
     });
   });
 });

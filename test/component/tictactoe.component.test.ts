@@ -59,26 +59,41 @@ describe("This is a test suite for components of the TicTacToe game", () => {
       spiedWinMethod = jest.spyOn(game, "hasWinAt");
     });
 
-    it("should check if that results in a victory", () => {
-      game.place("X", 1, 1);
-      expect(spiedWinMethod).toHaveBeenCalledWith("X", 1, 1);
-    });
+    describe("should check for a victory", () => {
+      it("by checking it with the right mark and coordinate", () => {
+        game.place("X", 1, 1);
+        expect(spiedWinMethod).toHaveBeenCalledWith("X", 1, 1);
+      });
 
-    it("and return that that player wins if that results in a victory", () => {
-      spiedWinMethod.mockReturnValueOnce(true);
-      const result = game.place("X", 1, 1);
-      expect(result).toEqual("Player X wins");
-    });
+      it("and return that that player wins if that results in a victory", () => {
+        spiedWinMethod.mockReturnValueOnce(true);
+        const result = game.place("X", 1, 1);
+        expect(result).toEqual("Player X wins");
+      });
 
-    it("otherwise should check if the board is completely full", () => {
-      game.place("X", 1, 1);
-      expect(mockedBoard.isFull).toHaveBeenCalled();
+      it("and set the game to finished", () => {
+        spiedWinMethod.mockReturnValueOnce(true);
+        game.place("X", 1, 1);
+        expect(game.finished()).toBeTruthy();
+      });
     });
+    describe("should check for a draw", () => {
+      it("by checking if the board is completely full", () => {
+        game.place("X", 1, 1);
+        expect(mockedBoard.isFull).toHaveBeenCalled();
+      });
 
-    it("and return that the game ends in a draw if that is the case", () => {
-      mockedBoard.isFull.mockReturnValueOnce(true);
-      const result = game.place("X", 1, 1);
-      expect(result).toEqual("Draw");
+      it("and return that the game ends in a draw if that is the case", () => {
+        mockedBoard.isFull.mockReturnValueOnce(true);
+        const result = game.place("X", 1, 1);
+        expect(result).toEqual("Draw");
+      });
+
+      it("and set the game to finished", () => {
+        mockedBoard.isFull.mockReturnValueOnce(true);
+        game.place("X", 1, 1);
+        expect(game.finished()).toBeTruthy();
+      });
     });
   });
 

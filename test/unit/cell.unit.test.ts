@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { Cell } from "../../src/cell";
+import { Cell, Mark } from "../../src/cell";
 
 let cell = new Cell();
 
@@ -17,26 +17,48 @@ describe("This is a test suite for the units of the cell class", () => {
       cell.place("X");
 
       expect(cell.getValue()).toEqual("X");
+      expect(cell.toString()).toEqual("X");
     });
 
     it("place an O", () => {
       cell.place("O");
 
       expect(cell.getValue()).toEqual("O");
+      expect(cell.toString()).toEqual("O");
+    });
+
+    it("an empty cell should be formatted as a space", () => {
+      expect(cell.getValue()).toBeUndefined();
+      expect(cell.toString()).toEqual(" ");
     });
   });
 
-  describe("A cell should be able to tell if it is filled", () => {
-    it("empty -> not filled", () => {
-      expect(cell.isFilled()).toBeFalsy();
+  describe("A cell should be able to tell if it is occupied", () => {
+    it("empty -> not occupied", () => {
+      expect(cell.occupied()).toBeFalsy();
     });
-    it("X placed -> filled", () => {
+    it("X placed -> occupied", () => {
       cell.place("X");
-      expect(cell.isFilled()).toBeTruthy();
+      expect(cell.occupied()).toBeTruthy();
     });
-    it("O placed -> filled", () => {
+    it("O placed -> occupied", () => {
       cell.place("O");
-      expect(cell.isFilled()).toBeTruthy();
+      expect(cell.occupied()).toBeTruthy();
     });
+  });
+
+  describe("A cell should throw an error when it is already occupied", () => {
+    test.each([
+      ["X", "X"],
+      ["X", "O"],
+      ["O", "X"],
+      ["O", "O"],
+    ] as [Mark, Mark][])(
+      "Place an %s, then an %s",
+      (first: Mark, second: Mark) => {
+        cell.place(first);
+        expect(() => cell.place(second)).toThrow("Cell is already occupied");
+      }
+    );
   });
 });

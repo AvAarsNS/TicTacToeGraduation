@@ -21,18 +21,23 @@ export function isOnDiagonal(
 export class TicTacToe {
   private board: Board;
 
+  private done: boolean;
+
   constructor() {
     this.board = new Board(3, 3);
+    this.done = false;
   }
 
   place(mark: Mark, row: number, column: number) {
     this.board.place(mark, row, column);
 
     if (this.hasWinAt(mark, row, column)) {
+      this.done = true;
       return `Player ${mark} wins`;
     }
 
     if (this.board.isFull()) {
+      this.done = true;
       return "Draw";
     }
 
@@ -54,5 +59,25 @@ export class TicTacToe {
     }
 
     return linesToCheck.some((line) => allValuesAre(line, mark));
+  }
+
+  finished() {
+    return this.done;
+  }
+
+  getFormattedBoard() {
+    let formattedBoard = "";
+    for (let row = 0; row < 3; row += 1) {
+      formattedBoard += this.board
+        .getRow(row)
+        .map((cell) => cell.toString())
+        .join("|");
+
+      if (row < 2) {
+        formattedBoard += "\n-----\n";
+      }
+    }
+
+    return formattedBoard;
   }
 }

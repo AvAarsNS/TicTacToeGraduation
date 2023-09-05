@@ -4,6 +4,7 @@ export class Cell {
   private value?: Mark;
 
   place(mark: Mark) {
+    if (this.occupied()) throw new Error("Cell is already occupied");
     this.value = mark;
   }
 
@@ -11,7 +12,11 @@ export class Cell {
     return this.value;
   }
 
-  isFilled() {
+  toString() {
+    return this.value || " ";
+  }
+
+  occupied() {
     return this.value !== undefined;
   }
 }

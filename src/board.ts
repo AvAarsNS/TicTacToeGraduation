@@ -33,6 +33,6 @@ export class Board {
   }
 
   isFull() {
-    return this.cells.flat().every((cell) => cell.isFilled());
+    return this.cells.flat().every((cell) => cell.occupied());
   }
 }
