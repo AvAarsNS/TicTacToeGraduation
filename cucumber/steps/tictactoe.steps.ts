@@ -114,4 +114,43 @@ defineFeature(feature, (test) => {
       expect(result).toEqual("Player X wins");
     });
   });
+
+  test("The game ends in a draw", ({ given, and, when, then }) => {
+    let game = new TicTacToe();
+    let result: string;
+
+    const placeStep = (step: DefineStepFunction) =>
+      step(
+        /^player [XO] places an ([XO]) at \((\d+),(\d+)\)$/,
+        (mark: "X" | "O", row: number, column: number) => {
+          result = game.place(mark, row, column);
+        }
+      );
+
+    given("two players play a game of tic tac toe", () => {
+      game = new TicTacToe();
+    });
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(and);
+
+    placeStep(when);
+
+    then("the game ends in a draw", () => {
+      expect(result).toEqual("Draw");
+    });
+  });
 });

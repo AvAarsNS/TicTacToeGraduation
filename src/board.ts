@@ -31,4 +31,8 @@ export class Board {
 
     return this.cells.map((row, index) => row[width - 1 - index]);
   }
+
+  isFull() {
+    return this.cells.flat().every((cell) => cell.isFilled());
+  }
 }

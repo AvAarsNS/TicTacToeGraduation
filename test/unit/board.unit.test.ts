@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Board } from "../../src/board";
 import { Cell } from "../../src/cell";
-import { filledBoard } from "../doubles/board.double";
+import { filledBoard, fullBoard } from "../doubles/board.double";
 import {
   firstColumn,
   firstRow,
@@ -101,6 +101,24 @@ describe("This is a test suite for the units of the board class", () => {
         .forEach((cell, index) =>
           expect(cell.getValue()).toBe(expectedDiagonal[index].getValue())
         );
+    });
+  });
+
+  describe("The board should be able to determine if it is completely full", () => {
+    it("an empty board is not full", () => {
+      const board = new Board(3, 3);
+
+      expect(board.isFull()).toBeFalsy();
+    });
+    it("a half filled board is not full", () => {
+      const board = filledBoard();
+
+      expect(board.isFull()).toBeFalsy();
+    });
+    it("an empty board is not full", () => {
+      const board = fullBoard();
+
+      expect(board.isFull()).toBeTruthy();
     });
   });
 });

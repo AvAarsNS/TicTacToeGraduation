@@ -10,4 +10,8 @@ export class Cell {
   getValue() {
     return this.value;
   }
+
+  isFilled() {
+    return this.value !== undefined;
+  }
 }

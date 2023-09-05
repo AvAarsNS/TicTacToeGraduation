@@ -17,6 +17,7 @@ beforeEach(() => {
   mockedBoard.getRow.mockImplementation(mixedCells);
   mockedBoard.getColumn.mockImplementation(mixedCells);
   mockedBoard.getDiagonal.mockImplementation(mixedCells);
+  mockedBoard.isFull.mockReturnValue(false);
 });
 
 describe("This is a test suite for components of the TicTacToe game", () => {
@@ -63,10 +64,21 @@ describe("This is a test suite for components of the TicTacToe game", () => {
       expect(spiedWinMethod).toHaveBeenCalledWith("X", 1, 1);
     });
 
-    it("and return readable output if that results in a victory", () => {
+    it("and return that that player wins if that results in a victory", () => {
       spiedWinMethod.mockReturnValueOnce(true);
       const result = game.place("X", 1, 1);
       expect(result).toEqual("Player X wins");
+    });
+
+    it("otherwise should check if the board is completely full", () => {
+      game.place("X", 1, 1);
+      expect(mockedBoard.isFull).toHaveBeenCalled();
+    });
+
+    it("and return that the game ends in a draw if that is the case", () => {
+      mockedBoard.isFull.mockReturnValueOnce(true);
+      const result = game.place("X", 1, 1);
+      expect(result).toEqual("Draw");
     });
   });
 

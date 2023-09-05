@@ -32,6 +32,10 @@ export class TicTacToe {
       return `Player ${mark} wins`;
     }
 
+    if (this.board.isFull()) {
+      return "Draw";
+    }
+
     return `Placed ${mark} at (${row}, ${column})`;
   }
 
@@ -48,8 +52,6 @@ export class TicTacToe {
     if (diagonal === "\\" || diagonal === "both") {
       linesToCheck.push(this.board.getDiagonal("\\"));
     }
-
-    console.log(linesToCheck);
 
     return linesToCheck.some((line) => allValuesAre(line, mark));
   }
