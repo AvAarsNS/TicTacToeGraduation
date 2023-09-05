@@ -68,7 +68,7 @@ describe("This is a test suite for components of the TicTacToe game", () => {
       it("and return that that player wins if that results in a victory", () => {
         spiedWinMethod.mockReturnValueOnce(true);
         const result = game.place("X", 1, 1);
-        expect(result).toEqual("Player X wins");
+        expect(result).toEqual("Player X wins by placing (1, 1)");
       });
 
       it("and set the game to finished", () => {

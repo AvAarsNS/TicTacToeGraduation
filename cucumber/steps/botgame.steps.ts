@@ -30,7 +30,11 @@ defineFeature(feature, (test) => {
 
     and("the result is a win or draw", () => {
       const result = steps.pop();
-      expect(["Player X wins", "Player O wins", "Draw"]).toContain(result);
+      const success =
+        result?.startsWith("Player X wins") ||
+        result?.startsWith("Player O wins") ||
+        result === "Draw";
+      expect(success).toBeTruthy();
     });
   });
 });

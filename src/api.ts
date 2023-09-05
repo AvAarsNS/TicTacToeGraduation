@@ -1,17 +1,30 @@
 import express, { Request, Response } from "express";
+import { TicTacToe } from "./tictactoe";
+import { BotGame } from "./botgame";
 
 // Create a new express application instance
 const app: express.Application = express();
 
 app.use(express.json());
 
-// Define the POST endpoint
-app.post("/dummy", (req: Request, res: Response) => {
-  const response = "Hello World!";
+type ResponseFormat = {
+  steps: string[];
+  board: string;
+};
 
-  res.json({
-    response,
-  });
+// Define the POST endpoint
+app.get("/tictactoe", (_req: Request, res: Response) => {
+  const game = new TicTacToe();
+  const botGame = new BotGame(game);
+
+  const steps = botGame.play();
+
+  const response: ResponseFormat = {
+    steps,
+    board: game.getFormattedBoard(),
+  };
+
+  res.json(response);
 });
 
 // The server is listening on port 3000

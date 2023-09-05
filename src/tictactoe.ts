@@ -33,7 +33,7 @@ export class TicTacToe {
 
     if (this.hasWinAt(mark, row, column)) {
       this.done = true;
-      return `Player ${mark} wins`;
+      return `Player ${mark} wins by placing (${row}, ${column})`;
     }
 
     if (this.board.isFull()) {

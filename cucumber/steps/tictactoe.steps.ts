@@ -37,7 +37,7 @@ defineFeature(feature, (test) => {
     placeStep(when);
 
     then("player X wins the game", () => {
-      expect(result).toEqual("Player X wins");
+      expect(result).toContain("Player X wins");
     });
   });
 
@@ -75,7 +75,7 @@ defineFeature(feature, (test) => {
     placeStep(when);
 
     then("player O wins the game", () => {
-      expect(result).toEqual("Player O wins");
+      expect(result).toContain("Player O wins");
     });
   });
 
@@ -111,7 +111,7 @@ defineFeature(feature, (test) => {
     placeStep(when);
 
     then("player X wins the game", () => {
-      expect(result).toEqual("Player X wins");
+      expect(result).toContain("Player X wins");
     });
   });
 
